@@ -1,5 +1,13 @@
-import React, { useState, useRef, useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
+
+const createEmptyProduct = () => ({
+  name: "",
+  price: "",
+  category: "",
+  stock: "",
+  description: "",
+});
 
 const Home = () => {
   const navigate = useNavigate();
@@ -18,13 +26,7 @@ const Home = () => {
   const [productImage, setProductImage] = useState("");
   const productInputRef = useRef(null);
 
-  const [product, setProduct] = useState({
-    name: "",
-    price: "",
-    category: "",
-    stock: "",
-    description: "",
-  });
+  const [product, setProduct] = useState(createEmptyProduct);
 
   useEffect(() => {
     localStorage.setItem("products", JSON.stringify(products));
@@ -34,20 +36,20 @@ const Home = () => {
     localStorage.setItem("darkMode", darkMode);
   }, [darkMode]);
 
-  function out(e) {
+  function handleLogout(e) {
     e.preventDefault();
     navigate("/Login");
     localStorage.removeItem("loggedin");
   }
 
-  function handleProductChange(e) {
+  function handleProductFieldChange(e) {
     setProduct({
       ...product,
       [e.target.name]: e.target.value,
     });
   }
 
-  function handleProductImage(e) {
+  function handleImageChange(e) {
     const file = e.target.files[0];
 
     if (file) {
@@ -64,13 +66,7 @@ const Home = () => {
   function openAddForm() {
     setEditingId(null);
 
-    setProduct({
-      name: "",
-      price: "",
-      category: "",
-      stock: "",
-      description: "",
-    });
+    setProduct(createEmptyProduct());
 
     setProductImage("");
     setShowForm(true);
@@ -91,7 +87,7 @@ const Home = () => {
     setShowForm(true);
   }
 
-  function saveProduct(e) {
+  function handleProductSubmit(e) {
     e.preventDefault();
 
     if (!product.name || !product.price || !productImage) {
@@ -100,15 +96,15 @@ const Home = () => {
     }
 
     if (editingId) {
-      setProducts(
-        products.map((item) =>
-          item.id === editingId
+      setProducts((currentProducts) =>
+        currentProducts.map((productItem) =>
+          productItem.id === editingId
             ? {
-                ...item,
+                ...productItem,
                 ...product,
                 image: productImage,
               }
-            : item,
+            : productItem,
         ),
       );
     } else {
@@ -118,24 +114,20 @@ const Home = () => {
         image: productImage,
       };
 
-      setProducts([...products, newProduct]);
+      setProducts((currentProducts) => [...currentProducts, newProduct]);
     }
 
-    setProduct({
-      name: "",
-      price: "",
-      category: "",
-      stock: "",
-      description: "",
-    });
+    setProduct(createEmptyProduct());
 
     setProductImage("");
     setEditingId(null);
     setShowForm(false);
   }
 
-  function deleteProduct(id) {
-    setProducts(products.filter((item) => item.id !== id));
+  function handleDeleteProduct(id) {
+    setProducts((currentProducts) =>
+      currentProducts.filter((productItem) => productItem.id !== id),
+    );
   }
 
   return (
@@ -240,7 +232,7 @@ const Home = () => {
             </button>
 
             <button
-              onClick={out}
+              onClick={handleLogout}
               className="bg-blue-600 text-white px-5 py-3 rounded-lg hover:bg-blue-700 transition"
             >
               LOGOUT
@@ -300,7 +292,7 @@ const Home = () => {
             </h3>
 
             <form
-              onSubmit={saveProduct}
+              onSubmit={handleProductSubmit}
               className="grid grid-cols-1 lg:grid-cols-2 gap-6"
             >
               <div>
@@ -338,7 +330,7 @@ const Home = () => {
                   type="file"
                   accept="image/*"
                   className="hidden"
-                  onChange={handleProductImage}
+                  onChange={handleImageChange}
                 />
               </div>
 
@@ -356,7 +348,7 @@ const Home = () => {
                     type="text"
                     name="name"
                     value={product.name}
-                    onChange={handleProductChange}
+                    onChange={handleProductFieldChange}
                     placeholder="Enter product name"
                     className={`w-full rounded-lg px-4 py-3 outline-none border ${
                       darkMode
@@ -380,7 +372,7 @@ const Home = () => {
                       type="number"
                       name="price"
                       value={product.price}
-                      onChange={handleProductChange}
+                      onChange={handleProductFieldChange}
                       placeholder="Enter price"
                       className={`w-full rounded-lg px-4 py-3 outline-none border ${
                         darkMode
@@ -403,7 +395,7 @@ const Home = () => {
                       type="number"
                       name="stock"
                       value={product.stock}
-                      onChange={handleProductChange}
+                      onChange={handleProductFieldChange}
                       placeholder="Stock quantity"
                       className={`w-full rounded-lg px-4 py-3 outline-none border ${
                         darkMode
@@ -427,7 +419,7 @@ const Home = () => {
                     type="text"
                     name="category"
                     value={product.category}
-                    onChange={handleProductChange}
+                    onChange={handleProductFieldChange}
                     placeholder="e.g. Electronics"
                     className={`w-full rounded-lg px-4 py-3 outline-none border ${
                       darkMode
@@ -449,7 +441,7 @@ const Home = () => {
                   <textarea
                     name="description"
                     value={product.description}
-                    onChange={handleProductChange}
+                    onChange={handleProductFieldChange}
                     placeholder="Enter product description"
                     rows="3"
                     className={`w-full rounded-lg px-4 py-3 outline-none border resize-none ${
@@ -558,7 +550,7 @@ const Home = () => {
                     </h4>
 
                     <p
-                      className={`text-sm mt-2 line-clamp-2 min-h-[40px] ${
+                      className={`text-sm mt-2 line-clamp-2 min-h-10 ${
                         darkMode ? "text-gray-400" : "text-gray-500"
                       }`}
                     >
@@ -592,7 +584,7 @@ const Home = () => {
                       </button>
 
                       <button
-                        onClick={() => deleteProduct(item.id)}
+                        onClick={() => handleDeleteProduct(item.id)}
                         className="flex-1 bg-red-50 text-red-600 py-2.5 rounded-lg hover:bg-red-100 transition font-medium"
                       >
                         Delete
