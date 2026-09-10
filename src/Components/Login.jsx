@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 const Login = () => {
@@ -33,8 +33,6 @@ const Login = () => {
       <div className="w-full max-w-md">
         <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-6 sm:p-8">
           <div className="text-center mb-8">
-            
-
             <h1 className="text-3xl font-bold text-gray-800">Welcome Back</h1>
 
             <p className="text-gray-500 mt-2 text-sm">
