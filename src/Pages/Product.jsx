@@ -35,7 +35,7 @@ const Product = () => {
   function handleLogout(e) {
     e.preventDefault();
     localStorage.removeItem("loggedin");
-    navigate("/Login");
+    navigate("/login");
   }
 
   function handleProductFieldChange(e) {

@@ -32,7 +32,7 @@ const Home = () => {
 
   function handleLogout(e) {
     e.preventDefault();
-    navigate("/Login");
+    navigate("/login");
     localStorage.removeItem("loggedin");
   }
 

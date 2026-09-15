@@ -1,4 +1,4 @@
-import  { useState } from "react";
+import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 const Register = () => {
@@ -23,7 +23,7 @@ const Register = () => {
       localStorage.setItem("Password", JSON.stringify(password));
 
       setLogin(login);
-      navigate("/Login");
+      navigate("/login");
     }
   }
 
@@ -108,7 +108,7 @@ const Register = () => {
           <p className="text-center text-sm text-gray-500">
             Already have an account?{" "}
             <Link
-              to="/Login"
+              to="/login"
               className="text-blue-600 font-semibold hover:text-blue-700 hover:underline transition"
             >
               Log In
