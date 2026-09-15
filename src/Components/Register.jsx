@@ -23,7 +23,7 @@ const Register = () => {
       localStorage.setItem("Password", JSON.stringify(password));
 
       setLogin(login);
-      navigate("/login");
+      navigate("/Login");
     }
   }
 
@@ -108,7 +108,7 @@ const Register = () => {
           <p className="text-center text-sm text-gray-500">
             Already have an account?{" "}
             <Link
-              to="/login"
+              to="/Login"
               className="text-blue-600 font-semibold hover:text-blue-700 hover:underline transition"
             >
               Log In
