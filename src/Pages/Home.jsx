@@ -1,13 +1,5 @@
-import { useEffect, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
-
-const createEmptyProduct = () => ({
-  name: "",
-  price: "",
-  category: "",
-  stock: "",
-  description: "",
-});
+import { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 
 const Home = () => {
   const navigate = useNavigate();
@@ -16,21 +8,23 @@ const Home = () => {
   const [darkMode, setDarkMode] = useState(() => {
     return localStorage.getItem("darkMode") === "true";
   });
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  const [products, setProducts] = useState(() => {
+  const [products] = useState(() => {
     return JSON.parse(localStorage.getItem("products")) || [];
   });
 
-  const [showForm, setShowForm] = useState(false);
-  const [editingId, setEditingId] = useState(null);
-  const [productImage, setProductImage] = useState("");
-  const productInputRef = useRef(null);
-
-  const [product, setProduct] = useState(createEmptyProduct);
-
-  useEffect(() => {
-    localStorage.setItem("products", JSON.stringify(products));
-  }, [products]);
+  const totalStock = products.reduce(
+    (total, item) => total + Number(item.stock || 0),
+    0,
+  );
+  const inventoryValue = products.reduce(
+    (total, item) => total + Number(item.price || 0) * Number(item.stock || 0),
+    0,
+  );
+  const categoryCount = new Set(
+    products.map((item) => item.category).filter(Boolean),
+  ).size;
 
   useEffect(() => {
     localStorage.setItem("darkMode", darkMode);
@@ -42,94 +36,6 @@ const Home = () => {
     localStorage.removeItem("loggedin");
   }
 
-  function handleProductFieldChange(e) {
-    setProduct({
-      ...product,
-      [e.target.name]: e.target.value,
-    });
-  }
-
-  function handleImageChange(e) {
-    const file = e.target.files[0];
-
-    if (file) {
-      const reader = new FileReader();
-
-      reader.onloadend = () => {
-        setProductImage(reader.result);
-      };
-
-      reader.readAsDataURL(file);
-    }
-  }
-
-  function openAddForm() {
-    setEditingId(null);
-
-    setProduct(createEmptyProduct());
-
-    setProductImage("");
-    setShowForm(true);
-  }
-
-  function openEditForm(item) {
-    setEditingId(item.id);
-
-    setProduct({
-      name: item.name,
-      price: item.price,
-      category: item.category,
-      stock: item.stock,
-      description: item.description,
-    });
-
-    setProductImage(item.image);
-    setShowForm(true);
-  }
-
-  function handleProductSubmit(e) {
-    e.preventDefault();
-
-    if (!product.name || !product.price || !productImage) {
-      alert("Please add product name, price and image");
-      return;
-    }
-
-    if (editingId) {
-      setProducts((currentProducts) =>
-        currentProducts.map((productItem) =>
-          productItem.id === editingId
-            ? {
-                ...productItem,
-                ...product,
-                image: productImage,
-              }
-            : productItem,
-        ),
-      );
-    } else {
-      const newProduct = {
-        id: Date.now(),
-        ...product,
-        image: productImage,
-      };
-
-      setProducts((currentProducts) => [...currentProducts, newProduct]);
-    }
-
-    setProduct(createEmptyProduct());
-
-    setProductImage("");
-    setEditingId(null);
-    setShowForm(false);
-  }
-
-  function handleDeleteProduct(id) {
-    setProducts((currentProducts) =>
-      currentProducts.filter((productItem) => productItem.id !== id),
-    );
-  }
-
   return (
     <div
       className={`min-h-screen flex transition-colors duration-300 ${
@@ -137,22 +43,33 @@ const Home = () => {
       }`}
     >
       <aside
-        className={`hidden md:flex w-64 border-r flex-col p-6 transition-colors duration-300 ${
+        className={`${mobileMenuOpen ? "flex" : "hidden"} fixed inset-y-0 left-0 z-50 w-72 border-r flex-col p-6 transition-transform duration-300 md:static md:flex md:w-64 ${
           darkMode ? "bg-gray-900 border-gray-800" : "bg-white border-gray-200"
         }`}
       >
-        <h1 className="text-2xl font-bold text-blue-600 mb-10">DASHBOARD</h1>
+        <div className="flex items-center justify-between mb-10">
+          <h1 className="text-2xl font-bold text-blue-600">DASHBOARD</h1>
+          <button
+            type="button"
+            onClick={() => setMobileMenuOpen(false)}
+            className="md:hidden rounded-lg p-2 text-gray-500 hover:bg-gray-100"
+            aria-label="Close navigation menu"
+          >
+            X
+          </button>
+        </div>
 
         <nav className="space-y-3">
           <a
             href="#"
             className="block px-4 py-3 rounded-lg bg-blue-600 text-white"
           >
-            Home
+            Dashboard
           </a>
 
-          <a
-            href="#products"
+          <Link
+            to="/product"
+            onClick={() => setMobileMenuOpen(false)}
             className={`block px-4 py-3 rounded-lg transition ${
               darkMode
                 ? "text-gray-300 hover:bg-gray-800 hover:text-blue-400"
@@ -160,7 +77,7 @@ const Home = () => {
             }`}
           >
             Products
-          </a>
+          </Link>
 
           <a
             href="#"
@@ -197,20 +114,43 @@ const Home = () => {
         </nav>
       </aside>
 
+      {mobileMenuOpen && (
+        <button
+          type="button"
+          aria-label="Close navigation menu"
+          onClick={() => setMobileMenuOpen(false)}
+          className="fixed inset-0 z-40 bg-black/40 md:hidden"
+        />
+      )}
+
       <main
-        className={`flex-1 p-4 sm:p-6 lg:p-8 transition-colors duration-300 ${
+        className={`min-w-0 flex-1 p-3 sm:p-6 lg:p-8 transition-colors duration-300 ${
           darkMode ? "bg-gray-950" : "bg-gray-50"
         }`}
       >
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-5 mb-6 sm:mb-8">
           <div>
-            <h2
-              className={`text-2xl sm:text-3xl font-bold ${
-                darkMode ? "text-white" : "text-gray-800"
-              }`}
-            >
-              Home
-            </h2>
+            <div className="flex items-center gap-3">
+              <button
+                type="button"
+                onClick={() => setMobileMenuOpen(true)}
+                className={`grid h-11 w-11 shrink-0 place-items-center rounded-xl border text-2xl leading-none shadow-sm transition md:hidden ${
+                  darkMode
+                    ? "border-gray-700 bg-gray-800 text-blue-400 hover:bg-gray-700"
+                    : "border-blue-100 bg-white text-blue-600 hover:bg-blue-50"
+                }`}
+                aria-label="Open navigation menu"
+              >
+                ☰
+              </button>
+              <h2
+                className={`text-2xl sm:text-3xl font-bold ${
+                  darkMode ? "text-white" : "text-gray-800"
+                }`}
+              >
+                Dashboard
+              </h2>
+            </div>
 
             <p
               className={`mt-1 ${darkMode ? "text-gray-400" : "text-gray-500"}`}
@@ -219,10 +159,10 @@ const Home = () => {
             </p>
           </div>
 
-          <div className="flex gap-3">
+          <div className="flex w-full gap-2 sm:w-auto sm:gap-3">
             <button
               onClick={() => setDarkMode(!darkMode)}
-              className={`px-5 py-3 rounded-lg font-medium transition ${
+              className={`flex-1 px-3 py-3 text-sm sm:flex-none sm:px-5 sm:text-base rounded-lg font-medium transition ${
                 darkMode
                   ? "bg-gray-800 text-white hover:bg-gray-700"
                   : "bg-gray-200 text-gray-800 hover:bg-gray-300"
@@ -233,364 +173,196 @@ const Home = () => {
 
             <button
               onClick={handleLogout}
-              className="bg-blue-600 text-white px-5 py-3 rounded-lg hover:bg-blue-700 transition"
+              className="flex-1 bg-blue-600 text-white px-3 py-3 text-sm sm:flex-none sm:px-5 sm:text-base rounded-lg hover:bg-blue-700 transition"
             >
               LOGOUT
             </button>
           </div>
         </div>
 
-        <section
-          className={`rounded-2xl p-5 sm:p-6 shadow-sm border mb-8 transition-colors duration-300 ${
-            darkMode
-              ? "bg-gray-900 border-gray-800"
-              : "bg-white border-gray-100"
-          }`}
-        >
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-            <div>
-              <h3
-                className={`text-xl font-bold ${
-                  darkMode ? "text-white" : "text-gray-800"
-                }`}
-              >
-                Product Management
-              </h3>
-
+        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 mb-8">
+          {[
+            ["Products", products.length, "Total catalog items"],
+            ["Stock units", totalStock, "Units currently listed"],
+            [
+              "Inventory value",
+              `$${inventoryValue.toFixed(2)}`,
+              "Price x stock",
+            ],
+            ["Categories", categoryCount, "Active product groups"],
+          ].map(([label, value, detail]) => (
+            <div
+              key={label}
+              className={`rounded-xl border p-5 shadow-sm ${
+                darkMode
+                  ? "bg-gray-900 border-gray-800"
+                  : "bg-white border-gray-100"
+              }`}
+            >
               <p
-                className={`text-sm mt-1 ${
+                className={`text-sm ${
                   darkMode ? "text-gray-400" : "text-gray-500"
                 }`}
               >
-                Add and manage your products
+                {label}
+              </p>
+              <p
+                className={`text-2xl font-bold mt-2 ${
+                  darkMode ? "text-white" : "text-gray-800"
+                }`}
+              >
+                {value}
+              </p>
+              <p
+                className={`text-xs mt-1 ${
+                  darkMode ? "text-gray-500" : "text-gray-400"
+                }`}
+              >
+                {detail}
               </p>
             </div>
+          ))}
+        </div>
 
-            <button
-              onClick={showForm ? () => setShowForm(false) : openAddForm}
-              className="bg-blue-600 text-white px-5 py-3 rounded-lg hover:bg-blue-700 transition"
-            >
-              {showForm ? "CLOSE FORM" : "+ ADD PRODUCT"}
-            </button>
-          </div>
-        </section>
-
-        {showForm && (
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <section
-            className={`rounded-2xl p-5 sm:p-6 shadow-sm border mb-8 transition-colors duration-300 ${
+            className={`lg:col-span-2 rounded-2xl border p-4 sm:p-6 shadow-sm ${
               darkMode
                 ? "bg-gray-900 border-gray-800"
                 : "bg-white border-gray-100"
             }`}
           >
-            <h3
-              className={`text-xl font-bold mb-6 ${
-                darkMode ? "text-white" : "text-gray-800"
-              }`}
-            >
-              {editingId ? "Edit Product" : "Add New Product"}
-            </h3>
+            <div className="flex items-start justify-between gap-3 mb-6">
+              <div className="min-w-0">
+                <h3 className="text-xl font-bold">Inventory overview</h3>
+                <p className={darkMode ? "text-gray-400" : "text-gray-500"}>
+                  A quick view of your product operation.
+                </p>
+              </div>
+              <span className="shrink-0 text-2xl">▦</span>
+            </div>
 
-            <form
-              onSubmit={handleProductSubmit}
-              className="grid grid-cols-1 lg:grid-cols-2 gap-6"
-            >
+            <div className="space-y-5">
               <div>
-                <label
-                  className={`block text-sm font-semibold mb-2 ${
-                    darkMode ? "text-gray-300" : "text-gray-700"
-                  }`}
-                >
-                  Product Image
-                </label>
-
-                <div
-                  onClick={() => productInputRef.current.click()}
-                  className="w-full h-80 border-2 border-dashed border-blue-200 rounded-xl bg-blue-50 flex items-center justify-center cursor-pointer overflow-hidden hover:border-blue-500 transition"
-                >
-                  {productImage ? (
-                    <img
-                      src={productImage}
-                      alt="Product Preview"
-                      className="w-full h-full object-cover"
-                    />
-                  ) : (
-                    <div className="text-center">
-                      <div className="text-blue-600 text-4xl mb-2">+</div>
-
-                      <p className="text-blue-600 font-semibold">
-                        Upload Product Image
-                      </p>
-                    </div>
-                  )}
+                <div className="flex justify-between text-sm mb-2">
+                  <span>Catalog coverage</span>
+                  <span
+                    className={darkMode ? "text-gray-400" : "text-gray-500"}
+                  >
+                    {products.length} items
+                  </span>
                 </div>
-
-                <input
-                  ref={productInputRef}
-                  type="file"
-                  accept="image/*"
-                  className="hidden"
-                  onChange={handleImageChange}
-                />
+                <div className="h-2 rounded-full bg-gray-200 overflow-hidden">
+                  <div
+                    className="h-full rounded-full bg-blue-600"
+                    style={{ width: `${Math.min(products.length * 10, 100)}%` }}
+                  />
+                </div>
               </div>
 
-              <div className="space-y-4">
-                <div>
-                  <label
-                    className={`block text-sm font-semibold mb-2 ${
-                      darkMode ? "text-gray-300" : "text-gray-700"
-                    }`}
+              <div>
+                <div className="flex justify-between text-sm mb-2">
+                  <span>Stock availability</span>
+                  <span
+                    className={darkMode ? "text-gray-400" : "text-gray-500"}
                   >
-                    Product Name
-                  </label>
-
-                  <input
-                    type="text"
-                    name="name"
-                    value={product.name}
-                    onChange={handleProductFieldChange}
-                    placeholder="Enter product name"
-                    className={`w-full rounded-lg px-4 py-3 outline-none border ${
-                      darkMode
-                        ? "bg-gray-800 border-gray-700 text-white placeholder-gray-500"
-                        : "bg-white border-gray-300 text-gray-800"
-                    } focus:border-blue-600`}
+                    {totalStock} units
+                  </span>
+                </div>
+                <div className="h-2 rounded-full bg-gray-200 overflow-hidden">
+                  <div
+                    className="h-full rounded-full bg-emerald-500"
+                    style={{ width: `${Math.min(totalStock, 100)}%` }}
                   />
                 </div>
-
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div>
-                    <label
-                      className={`block text-sm font-semibold mb-2 ${
-                        darkMode ? "text-gray-300" : "text-gray-700"
-                      }`}
-                    >
-                      Price
-                    </label>
-
-                    <input
-                      type="number"
-                      name="price"
-                      value={product.price}
-                      onChange={handleProductFieldChange}
-                      placeholder="Enter price"
-                      className={`w-full rounded-lg px-4 py-3 outline-none border ${
-                        darkMode
-                          ? "bg-gray-800 border-gray-700 text-white placeholder-gray-500"
-                          : "bg-white border-gray-300 text-gray-800"
-                      } focus:border-blue-600`}
-                    />
-                  </div>
-
-                  <div>
-                    <label
-                      className={`block text-sm font-semibold mb-2 ${
-                        darkMode ? "text-gray-300" : "text-gray-700"
-                      }`}
-                    >
-                      Stock
-                    </label>
-
-                    <input
-                      type="number"
-                      name="stock"
-                      value={product.stock}
-                      onChange={handleProductFieldChange}
-                      placeholder="Stock quantity"
-                      className={`w-full rounded-lg px-4 py-3 outline-none border ${
-                        darkMode
-                          ? "bg-gray-800 border-gray-700 text-white placeholder-gray-500"
-                          : "bg-white border-gray-300 text-gray-800"
-                      } focus:border-blue-600`}
-                    />
-                  </div>
-                </div>
-
-                <div>
-                  <label
-                    className={`block text-sm font-semibold mb-2 ${
-                      darkMode ? "text-gray-300" : "text-gray-700"
-                    }`}
-                  >
-                    Category
-                  </label>
-
-                  <input
-                    type="text"
-                    name="category"
-                    value={product.category}
-                    onChange={handleProductFieldChange}
-                    placeholder="e.g. Electronics"
-                    className={`w-full rounded-lg px-4 py-3 outline-none border ${
-                      darkMode
-                        ? "bg-gray-800 border-gray-700 text-white placeholder-gray-500"
-                        : "bg-white border-gray-300 text-gray-800"
-                    } focus:border-blue-600`}
-                  />
-                </div>
-
-                <div>
-                  <label
-                    className={`block text-sm font-semibold mb-2 ${
-                      darkMode ? "text-gray-300" : "text-gray-700"
-                    }`}
-                  >
-                    Description
-                  </label>
-
-                  <textarea
-                    name="description"
-                    value={product.description}
-                    onChange={handleProductFieldChange}
-                    placeholder="Enter product description"
-                    rows="3"
-                    className={`w-full rounded-lg px-4 py-3 outline-none border resize-none ${
-                      darkMode
-                        ? "bg-gray-800 border-gray-700 text-white placeholder-gray-500"
-                        : "bg-white border-gray-300 text-gray-800"
-                    } focus:border-blue-600`}
-                  />
-                </div>
-
-                <button
-                  type="submit"
-                  className="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition"
-                >
-                  {editingId ? "UPDATE PRODUCT" : "ADD PRODUCT"}
-                </button>
               </div>
-            </form>
+            </div>
           </section>
-        )}
 
-        <section id="products">
-          <div className="flex items-center justify-between mb-5">
-            <div>
-              <h3
-                className={`text-2xl font-bold ${
-                  darkMode ? "text-white" : "text-gray-800"
-                }`}
-              >
-                Products
-              </h3>
+          <section
+            className={`rounded-2xl border p-4 sm:p-6 shadow-sm ${
+              darkMode
+                ? "bg-gray-900 border-gray-800"
+                : "bg-white border-gray-100"
+            }`}
+          >
+            <h3 className="text-xl font-bold">Quick actions</h3>
+            <p
+              className={`mt-1 text-sm ${darkMode ? "text-gray-400" : "text-gray-500"}`}
+            >
+              Keep your catalog up to date.
+            </p>
+            <Link
+              to="/product"
+              className="block text-center mt-6 bg-blue-600 text-white px-4 py-3 rounded-lg hover:bg-blue-700 transition"
+            >
+              Open Product Manager
+            </Link>
+            <div
+              className={`mt-4 rounded-lg p-4 text-sm ${darkMode ? "bg-gray-800 text-gray-300" : "bg-blue-50 text-blue-700"}`}
+            >
+              Add images by pasting a direct image link in the Product Manager.
+            </div>
+          </section>
+        </div>
 
+        <section
+          className={`mt-6 rounded-2xl border p-4 sm:p-5 shadow-sm ${
+            darkMode
+              ? "bg-gray-900 border-gray-800"
+              : "bg-white border-gray-100"
+          }`}
+        >
+          <div className="flex items-start justify-between gap-3 mb-4">
+            <div className="min-w-0">
+              <h3 className="text-xl font-bold">Recent products</h3>
               <p
-                className={`text-sm mt-1 ${
-                  darkMode ? "text-gray-400" : "text-gray-500"
-                }`}
+                className={`text-sm mt-1 ${darkMode ? "text-gray-400" : "text-gray-500"}`}
               >
-                Total Products: {products.length}
+                A quick look at your catalog.
               </p>
             </div>
+            <Link
+              to="/product"
+              className="text-sm font-semibold text-blue-600 hover:text-blue-700"
+            >
+              View all
+            </Link>
           </div>
 
           {products.length === 0 ? (
-            <div
-              className={`rounded-2xl border p-10 text-center ${
-                darkMode
-                  ? "bg-gray-900 border-gray-800"
-                  : "bg-white border-gray-200"
-              }`}
-            >
-              <div className="text-5xl mb-4">📦</div>
-
-              <h4
-                className={`text-lg font-bold ${
-                  darkMode ? "text-white" : "text-gray-800"
-                }`}
-              >
-                No Products Yet
-              </h4>
-
-              <p
-                className={`mt-2 mb-5 ${
-                  darkMode ? "text-gray-400" : "text-gray-500"
-                }`}
-              >
-                Add your first product to display it here.
-              </p>
-
-              <button
-                onClick={openAddForm}
-                className="bg-blue-600 text-white px-5 py-3 rounded-lg hover:bg-blue-700"
-              >
-                + Add Product
-              </button>
-            </div>
+            <p className={darkMode ? "text-gray-400" : "text-gray-500"}>
+              No products have been added yet.
+            </p>
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-              {products.map((item) => (
+            <div className="divide-y divide-gray-200 dark:divide-gray-800">
+              {products.slice(0, 4).map((item) => (
                 <div
                   key={item.id}
-                  className={`rounded-2xl overflow-hidden border shadow-sm hover:shadow-md transition ${
-                    darkMode
-                      ? "bg-gray-900 border-gray-800"
-                      : "bg-white border-gray-200"
-                  }`}
+                  className="flex items-center gap-3 py-3 first:pt-0 last:pb-0"
                 >
-                  <div className="relative h-82 bg-gray-100">
-                    <img
-                      src={item.image}
-                      alt={item.name}
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-
-                  <div className="p-5">
-                    <span className="inline-block bg-blue-50 text-blue-600 text-xs font-semibold px-3 py-1 rounded-full mb-3">
-                      {item.category || "Uncategorized"}
-                    </span>
-
-                    <h4
-                      className={`text-lg font-bold truncate ${
-                        darkMode ? "text-white" : "text-gray-800"
-                      }`}
+                  <img
+                    src={item.image}
+                    alt=""
+                    className="h-11 w-11 rounded-lg object-cover bg-gray-100"
+                  />
+                  <div className="min-w-0 flex-1">
+                    <p
+                      className={`truncate font-semibold ${darkMode ? "text-white" : "text-gray-800"}`}
                     >
                       {item.name}
-                    </h4>
-
-                    <p
-                      className={`text-sm mt-2 line-clamp-2 min-h-10 ${
-                        darkMode ? "text-gray-400" : "text-gray-500"
-                      }`}
-                    >
-                      {item.description || "No description available"}
                     </p>
-
-                    <div className="flex items-center justify-between mt-5">
-                      <span
-                        className={`font-bold text-xl ${
-                          darkMode ? " text-white" : "text-gray-700"
-                        }`}
-                      >
-                        ${item.price}
-                      </span>
-
-                      <span
-                        className={`text-sm ${
-                          darkMode ? "text-gray-400" : "text-gray-500"
-                        }`}
-                      >
-                        Stock: {item.stock || 0}
-                      </span>
-                    </div>
-
-                    <div className="flex gap-2 mt-5">
-                      <button
-                        onClick={() => openEditForm(item)}
-                        className="flex-1 bg-blue-600 text-white py-2.5 rounded-lg hover:bg-blue-700 transition font-medium"
-                      >
-                        Edit
-                      </button>
-
-                      <button
-                        onClick={() => handleDeleteProduct(item.id)}
-                        className="flex-1 bg-red-50 text-red-600 py-2.5 rounded-lg hover:bg-red-100 transition font-medium"
-                      >
-                        Delete
-                      </button>
-                    </div>
+                    <p
+                      className={`truncate text-sm ${darkMode ? "text-gray-400" : "text-gray-500"}`}
+                    >
+                      {item.category || "Uncategorized"}
+                    </p>
                   </div>
+                  <span
+                    className={`font-semibold ${darkMode ? "text-white" : "text-gray-700"}`}
+                  >
+                    ${item.price}
+                  </span>
                 </div>
               ))}
             </div>

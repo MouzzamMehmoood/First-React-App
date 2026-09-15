@@ -1,11 +1,9 @@
-import React from "react";
-import { Outlet, Navigate } from "react-router-dom";
-import Login from "../Components/Login";
-import Home from "../Pages/Home";
+import { Navigate } from "react-router-dom";
 
-const Protectedrout = () => {
+const Protectedrout = ({ children }) => {
   const auth = localStorage.getItem("loggedin");
-  return auth ? <Home /> : <Navigate to={"/Login"} />;
+
+  return auth ? children : <Navigate to="/Login" replace />;
 };
 
 export default Protectedrout;
