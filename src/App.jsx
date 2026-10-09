@@ -11,7 +11,7 @@ import Customers from "./Pages/Customers";
 const App = () => {
   return (
     <>
-      <BrowserRouter>
+      <BrowserRouter basename={import.meta.env.BASE_URL}>
         <Routes>
           <Route path="/" element={<Shop />} />
           <Route path="/shop" element={<Shop />} />
