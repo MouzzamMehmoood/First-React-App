@@ -1,11 +1,11 @@
 /* ============================================================
-   SHIEN Atelier — Modern Luxury Design System & Aesthetics
+   SHIEN Atelier — High-End Luxury Design System & Aesthetics
    ============================================================ */
 
 @keyframes fadeInUp {
   0% {
     opacity: 0;
-    transform: translateY(20px);
+    transform: translateY(16px);
   }
   100% {
     opacity: 1;
@@ -15,36 +15,27 @@
 
 @keyframes floatSlow {
   0%, 100% {
-    transform: translateY(0px) rotate(0deg);
+    transform: translateY(0px);
   }
   50% {
-    transform: translateY(-8px) rotate(0.5deg);
+    transform: translateY(-6px);
   }
 }
 
 @keyframes pulseGlow {
   0%, 100% {
-    opacity: 0.5;
+    opacity: 0.4;
     transform: scale(1);
   }
   50% {
-    opacity: 0.85;
-    transform: scale(1.08);
+    opacity: 0.75;
+    transform: scale(1.05);
   }
 }
 
 @keyframes spinLoader {
   to {
     transform: rotate(360deg);
-  }
-}
-
-@keyframes shimmerEffect {
-  0% {
-    background-position: -200% 0;
-  }
-  100% {
-    background-position: 200% 0;
   }
 }
 
@@ -63,20 +54,19 @@ h1, h2, h3, .font-heading {
   font-family: 'Playfair Display', Georgia, serif;
 }
 
-/* Light Mode Shell */
+/* Light Mode Shell: Warm, Classy, Highly Readable */
 .shop-page {
-  background-color: #fafbfc;
-  color: #0f172a;
-  transition: background-color 350ms ease, color 350ms ease;
+  background-color: #faf9f6;
+  color: #18181b;
+  transition: background-color 300ms ease, color 300ms ease;
   min-height: 100vh;
 }
 
 .shop-shell {
   background:
-    radial-gradient(ellipse 80% 50% at 50% -20%, rgba(99, 102, 241, 0.08), transparent 70%),
-    radial-gradient(circle at 10% 30%, rgba(244, 211, 168, 0.12), transparent 40%),
-    radial-gradient(circle at 90% 70%, rgba(167, 139, 250, 0.08), transparent 40%),
-    linear-gradient(180deg, #fcfbfa 0%, #f7f6f4 50%, #f3f2ee 100%);
+    radial-gradient(circle at 15% 15%, rgba(217, 155, 56, 0.06), transparent 45%),
+    radial-gradient(circle at 85% 65%, rgba(180, 126, 40, 0.05), transparent 40%),
+    linear-gradient(180deg, #fcfbfa 0%, #f7f5f0 60%, #f3efe6 100%);
 }
 
 /* Sticky Frosted Header */
@@ -84,12 +74,12 @@ h1, h2, h3, .font-heading {
   position: sticky;
   top: 0;
   z-index: 40;
-  background: rgba(255, 255, 255, 0.82);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border-bottom: 1px solid rgba(226, 232, 240, 0.8);
-  box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.03);
-  transition: all 300ms cubic-bezier(0.16, 1, 0.3, 1);
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border-bottom: 1px solid rgba(229, 224, 216, 0.9);
+  box-shadow: 0 4px 20px -2px rgba(24, 24, 27, 0.03);
+  transition: all 250ms ease;
 }
 
 /* Logo & Monogram Badge */
@@ -100,23 +90,25 @@ h1, h2, h3, .font-heading {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #4338ca 100%);
+  background: linear-gradient(135deg, #1c1917 0%, #292524 50%, #44403c 100%);
   color: #ffffff;
-  box-shadow: 0 8px 16px -2px rgba(49, 46, 129, 0.25), inset 0 1px 1px rgba(255, 255, 255, 0.3);
-  transition: all 350ms cubic-bezier(0.16, 1, 0.3, 1);
+  border: 1px solid rgba(217, 155, 56, 0.3);
+  box-shadow: 0 8px 18px -2px rgba(28, 25, 23, 0.25);
+  transition: all 300ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .shop-logo:hover .shop-logo-mark {
-  transform: rotate(-6deg) scale(1.05);
-  box-shadow: 0 12px 24px -2px rgba(79, 70, 229, 0.35);
+  transform: rotate(-5deg) scale(1.05);
+  border-color: rgba(217, 155, 56, 0.7);
+  box-shadow: 0 12px 24px -2px rgba(180, 126, 40, 0.3);
 }
 
 .shop-logo-word {
-  letter-spacing: 0.2em;
+  letter-spacing: 0.22em;
   font-family: 'Outfit', sans-serif;
   font-weight: 700;
-  color: #0f172a;
-  transition: color 300ms ease;
+  color: #18181b;
+  transition: color 250ms ease;
 }
 
 /* Hero Section */
@@ -124,63 +116,52 @@ h1, h2, h3, .font-heading {
   position: relative;
   overflow: hidden;
   border-radius: 2rem;
-  border: 1px solid rgba(226, 232, 240, 0.8);
-  background: linear-gradient(135deg, #ffffff 0%, #fcfbf9 60%, #f8f5f0 100%);
-  box-shadow: 0 20px 40px -15px rgba(15, 23, 42, 0.05), 0 0 1px 1px rgba(255, 255, 255, 0.8) inset;
-  animation: fadeInUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+  border: 1px solid rgba(229, 224, 216, 0.95);
+  background: linear-gradient(135deg, #ffffff 0%, #fcfbf8 50%, #f8f4ec 100%);
+  box-shadow: 0 20px 45px -15px rgba(28, 25, 23, 0.06), 0 0 0 1px rgba(255, 255, 255, 0.9) inset;
+  animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
-.shop-hero-glow-1 {
+.shop-hero-glow {
   position: absolute;
-  top: -100px;
-  right: -50px;
-  width: 420px;
-  height: 420px;
+  top: -80px;
+  right: -40px;
+  width: 360px;
+  height: 360px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(99, 102, 241, 0.15) 0%, rgba(168, 85, 247, 0.08) 40%, transparent 70%);
+  background: radial-gradient(circle, rgba(217, 155, 56, 0.12) 0%, rgba(180, 126, 40, 0.05) 50%, transparent 70%);
   filter: blur(40px);
   pointer-events: none;
-  animation: pulseGlow 8s ease-in-out infinite;
+  animation: pulseGlow 7s ease-in-out infinite;
 }
 
-.shop-hero-glow-2 {
-  position: absolute;
-  bottom: -120px;
-  left: 20%;
-  width: 380px;
-  height: 380px;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(234, 179, 8, 0.12) 0%, rgba(249, 115, 22, 0.06) 40%, transparent 70%);
-  filter: blur(45px);
-  pointer-events: none;
-}
-
-/* Value Proposition Bar (Trust Badges) */
+/* Trust Badges */
 .shop-trust-card {
   border-radius: 1.25rem;
-  border: 1px solid rgba(226, 232, 240, 0.7);
-  background: rgba(255, 255, 255, 0.75);
+  border: 1px solid rgba(229, 224, 216, 0.85);
+  background: rgba(255, 255, 255, 0.85);
   backdrop-filter: blur(12px);
-  padding: 1.25rem;
+  padding: 1.15rem 1.25rem;
   display: flex;
   align-items: center;
   gap: 1rem;
-  box-shadow: 0 4px 15px -2px rgba(15, 23, 42, 0.02);
-  transition: all 300ms cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 4px 16px -3px rgba(28, 25, 23, 0.03);
+  transition: all 250ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .shop-trust-card:hover {
   transform: translateY(-3px);
-  box-shadow: 0 12px 25px -4px rgba(15, 23, 42, 0.06);
-  border-color: rgba(99, 102, 241, 0.3);
+  box-shadow: 0 12px 28px -4px rgba(28, 25, 23, 0.07);
+  border-color: rgba(180, 126, 40, 0.45);
 }
 
 /* Category Filter Tabs */
 .shop-category-chip {
-  padding: 0.6rem 1.25rem;
+  padding: 0.65rem 1.35rem;
   border-radius: 9999px;
   font-size: 0.875rem;
-  font-weight: 500;
+  font-weight: 600;
+  letter-spacing: 0.02em;
   transition: all 250ms cubic-bezier(0.16, 1, 0.3, 1);
   display: inline-flex;
   align-items: center;
@@ -190,21 +171,22 @@ h1, h2, h3, .font-heading {
 }
 
 .shop-category-chip.active {
-  background: #0f172a;
+  background: #18181b;
   color: #ffffff;
-  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.2);
+  border-color: #18181b;
+  box-shadow: 0 6px 18px -2px rgba(24, 24, 27, 0.28);
 }
 
 .shop-category-chip.inactive {
-  background: rgba(255, 255, 255, 0.85);
-  color: #475569;
-  border-color: rgba(226, 232, 240, 0.9);
+  background: #ffffff;
+  color: #4b5563;
+  border-color: rgba(229, 224, 216, 0.95);
 }
 
 .shop-category-chip.inactive:hover {
   background: #ffffff;
-  color: #0f172a;
-  border-color: rgba(99, 102, 241, 0.4);
+  color: #18181b;
+  border-color: rgba(180, 126, 40, 0.5);
   transform: translateY(-1px);
 }
 
@@ -215,82 +197,87 @@ h1, h2, h3, .font-heading {
   flex-direction: column;
   border-radius: 1.5rem;
   overflow: hidden;
-  background: rgba(255, 255, 255, 0.85);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(226, 232, 240, 0.8);
-  box-shadow: 0 4px 16px -2px rgba(15, 23, 42, 0.03);
-  transition: all 350ms cubic-bezier(0.16, 1, 0.3, 1);
-  animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+  background: #ffffff;
+  border: 1px solid rgba(229, 224, 216, 0.9);
+  box-shadow: 0 4px 20px -3px rgba(28, 25, 23, 0.04);
+  transition: all 300ms cubic-bezier(0.16, 1, 0.3, 1);
+  animation: fadeInUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
 .shop-product-card:hover {
-  transform: translateY(-6px);
-  border-color: rgba(99, 102, 241, 0.25);
-  box-shadow: 0 20px 35px -8px rgba(15, 23, 42, 0.08), 0 0 1px 1px rgba(99, 102, 241, 0.15);
+  transform: translateY(-5px);
+  border-color: rgba(180, 126, 40, 0.4);
+  box-shadow: 0 20px 40px -10px rgba(28, 25, 23, 0.1), 0 0 0 1px rgba(180, 126, 40, 0.15);
 }
 
 .shop-product-media-box {
   position: relative;
   aspect-ratio: 4 / 5;
   overflow: hidden;
-  background: #f1f5f9;
-  border-radius: 1.25rem 1.25rem 0 0;
+  background: #f5f2eb;
 }
 
 .shop-product-img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 600ms cubic-bezier(0.16, 1, 0.3, 1), filter 600ms ease;
-  filter: saturate(0.96) contrast(1.02);
+  transition: transform 550ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .shop-product-card:hover .shop-product-img {
-  transform: scale(1.06);
-  filter: saturate(1.04) contrast(1.04);
+  transform: scale(1.05);
 }
 
-/* Floating Wishlist Heart */
+/* Floating Wishlist Heart Button - High Contrast & Visible */
 .shop-wishlist-btn {
   position: absolute;
   top: 0.875rem;
   right: 0.875rem;
   z-index: 10;
-  width: 2.5rem;
-  height: 2.5rem;
+  width: 2.6rem;
+  height: 2.6rem;
   border-radius: 9999px;
   display: grid;
   place-items: center;
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  transition: all 250ms cubic-bezier(0.16, 1, 0.3, 1);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  background: rgba(255, 255, 255, 0.95);
+  color: #18181b;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
+  border: 1px solid rgba(229, 224, 216, 0.8);
+  transition: all 200ms ease;
 }
 
 .shop-wishlist-btn:hover {
   transform: scale(1.12);
+  background: #ffffff;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.16);
 }
 
-/* Buttons */
+.shop-wishlist-btn.active {
+  color: #e11d48;
+  background: #ffffff;
+  border-color: rgba(225, 29, 72, 0.3);
+}
+
+/* Luxury Primary Button */
 .shop-btn-primary {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
   border-radius: 9999px;
-  background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+  background: linear-gradient(135deg, #1c1917 0%, #292524 100%);
   color: #ffffff;
   font-weight: 600;
-  padding: 0.75rem 1.5rem;
-  box-shadow: 0 8px 20px -4px rgba(15, 23, 42, 0.25);
+  padding: 0.8rem 1.6rem;
+  box-shadow: 0 8px 20px -3px rgba(28, 25, 23, 0.25);
   transition: all 250ms cubic-bezier(0.16, 1, 0.3, 1);
   border: 1px solid rgba(255, 255, 255, 0.1);
   cursor: pointer;
 }
 
 .shop-btn-primary:hover {
-  background: linear-gradient(135deg, #4f46e5 0%, #4338ca 100%);
-  box-shadow: 0 12px 24px -4px rgba(79, 70, 229, 0.35);
+  background: linear-gradient(135deg, #b47e28 0%, #925f16 100%);
+  box-shadow: 0 10px 25px -3px rgba(180, 126, 40, 0.35);
   transform: translateY(-2px);
 }
 
@@ -301,66 +288,40 @@ h1, h2, h3, .font-heading {
   gap: 0.5rem;
   border-radius: 9999px;
   background: #ffffff;
-  color: #0f172a;
+  color: #18181b;
   font-weight: 600;
-  padding: 0.75rem 1.5rem;
-  border: 1px solid #e2e8f0;
-  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.03);
+  padding: 0.8rem 1.6rem;
+  border: 1px solid rgba(229, 224, 216, 0.95);
+  box-shadow: 0 4px 14px rgba(28, 25, 23, 0.03);
   transition: all 250ms cubic-bezier(0.16, 1, 0.3, 1);
   cursor: pointer;
 }
 
 .shop-btn-secondary:hover {
-  border-color: #cbd5e1;
-  background: #f8fafc;
+  border-color: rgba(180, 126, 40, 0.5);
+  background: #faf8f5;
+  color: #b47e28;
   transform: translateY(-2px);
-  box-shadow: 0 8px 18px rgba(15, 23, 42, 0.06);
-}
-
-/* Subtle Shimmer on Promotional Badges */
-.badge-shimmer {
-  background: linear-gradient(90deg, #4f46e5 0%, #818cf8 50%, #4f46e5 100%);
-  background-size: 200% 100%;
-  animation: shimmerEffect 4s linear infinite;
-  color: white;
-}
-
-/* Loading Screen Animation */
-.loading-screen {
-  background: rgba(248, 250, 252, 0.85);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-}
-
-.loading-panel {
-  border-radius: 2rem;
-  border: 1px solid rgba(226, 232, 240, 0.8);
-  background: rgba(255, 255, 255, 0.95);
-  box-shadow: 0 25px 60px -15px rgba(15, 23, 42, 0.12);
-}
-
-.loading-spinner {
-  animation: spinLoader 0.8s linear infinite;
+  box-shadow: 0 8px 20px rgba(28, 25, 23, 0.06);
 }
 
 /* ============================================================
    DARK MODE SYSTEM (.shop-dark)
    ============================================================ */
 .shop-dark.shop-page {
-  background-color: #080c14;
-  color: #f1f5f9;
+  background-color: #0e0f12;
+  color: #f4f4f5;
 }
 
 .shop-dark.shop-shell {
   background:
-    radial-gradient(ellipse 80% 50% at 50% -10%, rgba(99, 102, 241, 0.16), transparent 70%),
-    radial-gradient(circle at 10% 40%, rgba(139, 92, 246, 0.1), transparent 40%),
-    radial-gradient(circle at 90% 80%, rgba(56, 189, 248, 0.08), transparent 40%),
-    linear-gradient(180deg, #090d16 0%, #060910 100%);
+    radial-gradient(circle at 20% 20%, rgba(217, 155, 56, 0.08), transparent 50%),
+    radial-gradient(circle at 80% 70%, rgba(180, 126, 40, 0.06), transparent 45%),
+    linear-gradient(180deg, #111216 0%, #0c0d10 100%);
 }
 
 .shop-dark .shop-header {
-  background: rgba(11, 15, 25, 0.85);
+  background: rgba(17, 18, 22, 0.92);
   border-bottom-color: rgba(255, 255, 255, 0.08);
   box-shadow: 0 4px 25px rgba(0, 0, 0, 0.4);
 }
@@ -371,92 +332,73 @@ h1, h2, h3, .font-heading {
 
 .shop-dark .shop-hero-card {
   border-color: rgba(255, 255, 255, 0.08);
-  background: linear-gradient(135deg, rgba(17, 24, 39, 0.9) 0%, rgba(15, 23, 42, 0.8) 100%);
-  box-shadow: 0 24px 60px -15px rgba(0, 0, 0, 0.6), 0 0 1px 1px rgba(255, 255, 255, 0.08) inset;
+  background: linear-gradient(135deg, #18191f 0%, #131418 100%);
+  box-shadow: 0 24px 60px -15px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.06) inset;
 }
 
 .shop-dark .shop-trust-card {
   border-color: rgba(255, 255, 255, 0.07);
-  background: rgba(17, 24, 39, 0.65);
-  color: #e2e8f0;
+  background: rgba(24, 25, 31, 0.7);
+  color: #e4e4e7;
 }
 
 .shop-dark .shop-trust-card:hover {
-  border-color: rgba(99, 102, 241, 0.4);
+  border-color: rgba(217, 155, 56, 0.4);
   box-shadow: 0 12px 30px -4px rgba(0, 0, 0, 0.5);
 }
 
 .shop-dark .shop-category-chip.active {
-  background: #ffffff;
-  color: #0f172a;
-  box-shadow: 0 4px 16px rgba(255, 255, 255, 0.2);
+  background: #f4f4f5;
+  color: #18181b;
+  border-color: #f4f4f5;
+  box-shadow: 0 6px 18px rgba(255, 255, 255, 0.2);
 }
 
 .shop-dark .shop-category-chip.inactive {
-  background: rgba(17, 24, 39, 0.8);
-  color: #94a3b8;
+  background: rgba(24, 25, 31, 0.8);
+  color: #a1a1aa;
   border-color: rgba(255, 255, 255, 0.08);
 }
 
 .shop-dark .shop-category-chip.inactive:hover {
-  background: rgba(30, 41, 59, 0.9);
+  background: rgba(39, 41, 50, 0.9);
   color: #ffffff;
-  border-color: rgba(99, 102, 241, 0.5);
+  border-color: rgba(217, 155, 56, 0.5);
 }
 
 .shop-dark .shop-product-card {
-  background: rgba(15, 23, 42, 0.7);
+  background: #16171d;
   border-color: rgba(255, 255, 255, 0.08);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
 }
 
 .shop-dark .shop-product-card:hover {
-  border-color: rgba(129, 140, 248, 0.4);
-  box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.6), 0 0 1px 1px rgba(129, 140, 248, 0.2);
+  border-color: rgba(217, 155, 56, 0.4);
+  box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(217, 155, 56, 0.2);
 }
 
 .shop-dark .shop-product-media-box {
-  background: #0f172a;
+  background: #121317;
 }
 
-.shop-dark .shop-btn-primary {
-  background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
-  color: #ffffff;
-  box-shadow: 0 8px 20px -4px rgba(99, 102, 241, 0.4);
+.shop-dark .shop-wishlist-btn {
+  background: rgba(22, 23, 29, 0.9);
+  color: #f4f4f5;
+  border-color: rgba(255, 255, 255, 0.12);
 }
 
-.shop-dark .shop-btn-primary:hover {
-  background: linear-gradient(135deg, #818cf8 0%, #6366f1 100%);
-  box-shadow: 0 12px 28px -4px rgba(99, 102, 241, 0.55);
-}
-
-.shop-dark .shop-btn-secondary {
-  background: rgba(30, 41, 59, 0.8);
-  color: #ffffff;
-  border-color: rgba(255, 255, 255, 0.1);
-}
-
-.shop-dark .shop-btn-secondary:hover {
-  background: rgba(51, 65, 85, 0.9);
-  border-color: rgba(255, 255, 255, 0.2);
+.shop-dark .shop-wishlist-btn.active {
+  color: #fb7185;
+  background: rgba(22, 23, 29, 0.95);
+  border-color: rgba(251, 113, 133, 0.4);
 }
 
 .shop-dark .shop-footer {
-  background: #05080e !important;
+  background: #0a0b0d !important;
   border-top-color: rgba(255, 255, 255, 0.08) !important;
 }
 
-.shop-dark .loading-screen {
-  background: rgba(8, 12, 20, 0.85);
-}
-
-.shop-dark .loading-panel {
-  border-color: rgba(255, 255, 255, 0.1);
-  background: rgba(15, 23, 42, 0.95);
-  color: #ffffff;
-}
-
-/* Custom Scrollbar for Drawers */
+/* Custom Scrollbar */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
@@ -467,10 +409,10 @@ h1, h2, h3, .font-heading {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(148, 163, 184, 0.35);
+  background: rgba(161, 161, 170, 0.4);
   border-radius: 9999px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(148, 163, 184, 0.55);
+  background: rgba(161, 161, 170, 0.65);
 }
