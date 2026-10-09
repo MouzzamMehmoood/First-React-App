@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 const Login = () => {
@@ -6,7 +6,15 @@ const Login = () => {
 
   const [logemail, setLogemail] = useState("");
   const [logpassword, setLogpassword] = useState("");
+  const [adminCode, setAdminCode] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [showAdminCode, setShowAdminCode] = useState(false);
   const [logflag, setLogflag] = useState(false);
+
+  useEffect(() => {
+    const savedTheme = localStorage.getItem("theme") || "light";
+    document.documentElement.setAttribute("data-theme", savedTheme);
+  }, []);
 
   function loghandlesubmit(e) {
     e.preventDefault();
@@ -14,24 +22,29 @@ const Login = () => {
     const loggedemail = JSON.parse(localStorage.getItem("Email"));
     const loggedpass = JSON.parse(localStorage.getItem("Password"));
 
-    if (!logemail || !logpassword) {
+    if (!logemail || !logpassword || !adminCode) {
       setLogflag(true);
     } else {
       setLogflag(false);
 
-      if (loggedemail === logemail && loggedpass === logpassword) {
+      if (
+        loggedemail === logemail &&
+        loggedpass === logpassword &&
+        adminCode === "608255"
+      ) {
         localStorage.setItem("loggedin", true);
-        navigate("/");
+        localStorage.setItem("isAdmin", true);
+        navigate("/Dashboard");
       } else {
-        alert("Wrong information");
+        alert("Wrong email, password, or admin code");
       }
     }
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-100 flex items-center justify-center px-4 py-8">
+    <div className="min-h-screen bg-[#f8fafc] text-gray-800 flex items-center justify-center px-4 py-8">
       <div className="w-full max-w-md">
-        <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-6 sm:p-8">
+        <div className="bg-white rounded-2xl shadow-xl border border-gray-200 p-6 sm:p-8">
           <div className="text-center mb-8">
             <h1 className="text-3xl font-bold text-gray-800">Welcome Back</h1>
 
@@ -51,7 +64,7 @@ const Login = () => {
                 placeholder="Enter your email"
                 value={logemail}
                 onChange={(e) => setLogemail(e.target.value)}
-                className="w-full border border-gray-300 rounded-xl px-4 py-3.5 text-gray-800 outline-none transition focus:border-blue-600 focus:ring-2 focus:ring-blue-100"
+                className="w-full border border-gray-300 bg-white rounded-xl px-4 py-3.5 text-gray-800 outline-none transition focus:border-blue-600 focus:ring-2 focus:ring-blue-100"
               />
             </div>
 
@@ -60,13 +73,70 @@ const Login = () => {
                 Password
               </label>
 
-              <input
-                type="password"
-                placeholder="Enter your password"
-                value={logpassword}
-                onChange={(e) => setLogpassword(e.target.value)}
-                className="w-full border border-gray-300 rounded-xl px-4 py-3.5 text-gray-800 outline-none transition focus:border-blue-600 focus:ring-2 focus:ring-blue-100"
-              />
+              <div className="relative">
+                <input
+                  type={showPassword ? "text" : "password"}
+                  placeholder="Enter your password"
+                  value={logpassword}
+                  onChange={(e) => setLogpassword(e.target.value)}
+                  className="w-full border border-gray-300 bg-white rounded-xl px-4 py-3.5 pr-12 text-gray-800 outline-none transition focus:border-blue-600 focus:ring-2 focus:ring-blue-100"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 p-2 text-gray-500 hover:text-blue-600"
+                  aria-label={showPassword ? "Hide password" : "Show password"}
+                >
+                  <svg
+                    viewBox="0 0 24 24"
+                    className="h-5 w-5"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    aria-hidden="true"
+                  >
+                    <path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6S2 12 2 12Z" />
+                    <circle cx="12" cy="12" r="2.5" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-2">
+                Admin Code
+              </label>
+
+              <div className="relative">
+                <input
+                  type={showAdminCode ? "text" : "password"}
+                  inputMode="numeric"
+                  placeholder="Enter your admin code"
+                  value={adminCode}
+                  onChange={(e) => setAdminCode(e.target.value)}
+                  className="w-full border border-gray-300 bg-white rounded-xl px-4 py-3.5 pr-12 text-gray-800 outline-none transition focus:border-blue-600 focus:ring-2 focus:ring-blue-100"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowAdminCode(!showAdminCode)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 p-2 text-gray-500 hover:text-blue-600"
+                  aria-label={
+                    showAdminCode ? "Hide admin code" : "Show admin code"
+                  }
+                >
+                  <svg
+                    viewBox="0 0 24 24"
+                    className="h-5 w-5"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    aria-hidden="true"
+                  >
+                    <path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6S2 12 2 12Z" />
+                    <circle cx="12" cy="12" r="2.5" />
+                  </svg>
+                </button>
+              </div>
             </div>
 
             {logflag && (

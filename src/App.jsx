@@ -4,18 +4,23 @@ import Register from "./Components/Register";
 import Home from "./Pages/Home";
 import Protectedrout from "./Services/Protectedrout";
 import Product from "./Pages/Product";
+import Shop from "./Pages/Shop";
+import Orders from "./Pages/Orders";
+import Customers from "./Pages/Customers";
 
 const App = () => {
   return (
     <>
       <BrowserRouter>
         <Routes>
+          <Route path="/" element={<Shop />} />
+          <Route path="/shop" element={<Shop />} />
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
           <Route
-            path="/"
+            path="/Dashboard"
             element={
-              <Protectedrout>
+              <Protectedrout requireAdmin>
                 <Home />
               </Protectedrout>
             }
@@ -23,8 +28,24 @@ const App = () => {
           <Route
             path="/product"
             element={
-              <Protectedrout>
+              <Protectedrout requireAdmin>
                 <Product />
+              </Protectedrout>
+            }
+          />
+          <Route
+            path="/orders"
+            element={
+              <Protectedrout requireAdmin>
+                <Orders />
+              </Protectedrout>
+            }
+          />
+          <Route
+            path="/customers"
+            element={
+              <Protectedrout requireAdmin>
+                <Customers />
               </Protectedrout>
             }
           />

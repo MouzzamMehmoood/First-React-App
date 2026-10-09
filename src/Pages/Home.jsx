@@ -1,13 +1,28 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import ThemeSelector from "../Components/ThemeSelector";
 
 const Home = () => {
   const navigate = useNavigate();
   const name = JSON.parse(localStorage.getItem("Name"));
 
-  const [darkMode, setDarkMode] = useState(() => {
-    return localStorage.getItem("darkMode") === "true";
-  });
+  const [theme, setTheme] = useState(
+    () => localStorage.getItem("theme") || "light",
+  );
+  const darkMode = [
+    "dark",
+    "synthwave",
+    "halloween",
+    "forest",
+    "black",
+    "luxury",
+    "dracula",
+    "business",
+    "night",
+    "coffee",
+    "dim",
+    "abyss",
+  ].includes(theme);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const [products] = useState(() => {
@@ -27,8 +42,9 @@ const Home = () => {
   ).size;
 
   useEffect(() => {
-    localStorage.setItem("darkMode", darkMode);
-  }, [darkMode]);
+    localStorage.setItem("theme", theme);
+    document.documentElement.setAttribute("data-theme", theme);
+  }, [theme]);
 
   function handleLogout(e) {
     e.preventDefault();
@@ -37,18 +53,12 @@ const Home = () => {
   }
 
   return (
-    <div
-      className={`min-h-screen flex transition-colors duration-300 ${
-        darkMode ? "bg-gray-950 text-white" : "bg-white text-gray-800"
-      }`}
-    >
+    <div className="min-h-screen flex bg-base-200 text-base-content transition-colors duration-300">
       <aside
-        className={`${mobileMenuOpen ? "flex" : "hidden"} fixed inset-y-0 left-0 z-50 w-72 border-r flex-col p-6 transition-transform duration-300 md:static md:flex md:w-64 ${
-          darkMode ? "bg-gray-900 border-gray-800" : "bg-white border-gray-200"
-        }`}
+        className={`${mobileMenuOpen ? "flex" : "hidden"} fixed inset-y-0 left-0 z-50 w-72 border-r border-base-300 bg-base-100 flex-col p-6 transition-transform duration-300 md:static md:flex md:w-64`}
       >
         <div className="flex items-center justify-between mb-10">
-          <h1 className="text-2xl font-bold text-blue-600">DASHBOARD</h1>
+          <h1 className="text-2xl font-bold text-primary">DASHBOARD</h1>
           <button
             type="button"
             onClick={() => setMobileMenuOpen(false)}
@@ -60,9 +70,16 @@ const Home = () => {
         </div>
 
         <nav className="space-y-3">
+          <Link
+            to="/shop"
+            onClick={() => setMobileMenuOpen(false)}
+            className="block rounded-lg border border-primary/30 px-4 py-3 text-primary transition hover:bg-primary/10"
+          >
+            View storefront
+          </Link>
           <a
             href="#"
-            className="block px-4 py-3 rounded-lg bg-blue-600 text-white"
+            className="block rounded-lg bg-primary px-4 py-3 text-primary-content"
           >
             Dashboard
           </a>
@@ -72,41 +89,43 @@ const Home = () => {
             onClick={() => setMobileMenuOpen(false)}
             className={`block px-4 py-3 rounded-lg transition ${
               darkMode
-                ? "text-gray-300 hover:bg-gray-800 hover:text-blue-400"
-                : "text-gray-600 hover:bg-blue-50 hover:text-blue-600"
+                ? "text-base-content/80 hover:bg-base-200 hover:text-primary"
+                : "text-base-content/70 hover:bg-base-200 hover:text-primary"
             }`}
           >
             Products
+          </Link>
+
+          <Link
+            to="/orders"
+            onClick={() => setMobileMenuOpen(false)}
+            className={`block px-4 py-3 rounded-lg transition ${
+              darkMode
+                ? "text-base-content/80 hover:bg-base-200 hover:text-primary"
+                : "text-base-content/70 hover:bg-base-200 hover:text-primary"
+            }`}
+          >
+            Orders
+          </Link>
+
+          <Link
+            to="/customers"
+            onClick={() => setMobileMenuOpen(false)}
+            className={`block px-4 py-3 rounded-lg transition ${
+              darkMode
+                ? "text-base-content/80 hover:bg-base-200 hover:text-primary"
+                : "text-base-content/70 hover:bg-base-200 hover:text-primary"
+            }`}
+          >
+            Customers
           </Link>
 
           <a
             href="#"
             className={`block px-4 py-3 rounded-lg transition ${
               darkMode
-                ? "text-gray-300 hover:bg-gray-800 hover:text-blue-400"
-                : "text-gray-600 hover:bg-blue-50 hover:text-blue-600"
-            }`}
-          >
-            Orders
-          </a>
-
-          <a
-            href="#"
-            className={`block px-4 py-3 rounded-lg transition ${
-              darkMode
-                ? "text-gray-300 hover:bg-gray-800 hover:text-blue-400"
-                : "text-gray-600 hover:bg-blue-50 hover:text-blue-600"
-            }`}
-          >
-            Customers
-          </a>
-
-          <a
-            href="#"
-            className={`block px-4 py-3 rounded-lg transition ${
-              darkMode
-                ? "text-gray-300 hover:bg-gray-800 hover:text-blue-400"
-                : "text-gray-600 hover:bg-blue-50 hover:text-blue-600"
+                ? "text-base-content/80 hover:bg-base-200 hover:text-primary"
+                : "text-base-content/70 hover:bg-base-200 hover:text-primary"
             }`}
           >
             Settings
@@ -114,31 +133,14 @@ const Home = () => {
         </nav>
       </aside>
 
-      {mobileMenuOpen && (
-        <button
-          type="button"
-          aria-label="Close navigation menu"
-          onClick={() => setMobileMenuOpen(false)}
-          className="fixed inset-0 z-40 bg-black/40 md:hidden"
-        />
-      )}
-
-      <main
-        className={`min-w-0 flex-1 p-3 sm:p-6 lg:p-8 transition-colors duration-300 ${
-          darkMode ? "bg-gray-950" : "bg-gray-50"
-        }`}
-      >
+      <main className="min-w-0 flex-1 bg-base-200 p-3 sm:p-6 lg:p-8 transition-colors duration-300">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-5 mb-6 sm:mb-8">
           <div>
             <div className="flex items-center gap-3">
               <button
                 type="button"
                 onClick={() => setMobileMenuOpen(true)}
-                className={`grid h-11 w-11 shrink-0 place-items-center rounded-xl border text-2xl leading-none shadow-sm transition md:hidden ${
-                  darkMode
-                    ? "border-gray-700 bg-gray-800 text-blue-400 hover:bg-gray-700"
-                    : "border-blue-100 bg-white text-blue-600 hover:bg-blue-50"
-                }`}
+                className="btn btn-ghost btn-square shrink-0 text-2xl md:hidden"
                 aria-label="Open navigation menu"
               >
                 ☰
@@ -155,25 +157,16 @@ const Home = () => {
             <p
               className={`mt-1 ${darkMode ? "text-gray-400" : "text-gray-500"}`}
             >
-              Welcome back! <span className="text-blue-600">{name}</span>
+              Welcome back! <span className="text-primary">{name}</span>
             </p>
           </div>
 
-          <div className="flex w-full gap-2 sm:w-auto sm:gap-3">
-            <button
-              onClick={() => setDarkMode(!darkMode)}
-              className={`flex-1 px-3 py-3 text-sm sm:flex-none sm:px-5 sm:text-base rounded-lg font-medium transition ${
-                darkMode
-                  ? "bg-gray-800 text-white hover:bg-gray-700"
-                  : "bg-gray-200 text-gray-800 hover:bg-gray-300"
-              }`}
-            >
-              {darkMode ? " LIGHT MODE" : " DARK MODE"}
-            </button>
+          <div className="flex w-full flex-wrap items-center gap-2 sm:w-auto sm:gap-3">
+            <ThemeSelector theme={theme} onThemeChange={setTheme} />
 
             <button
               onClick={handleLogout}
-              className="flex-1 bg-blue-600 text-white px-3 py-3 text-sm sm:flex-none sm:px-5 sm:text-base rounded-lg hover:bg-blue-700 transition"
+              className="btn btn-primary flex-1 px-3 text-sm sm:flex-none sm:px-5 sm:text-base"
             >
               LOGOUT
             </button>
@@ -193,11 +186,7 @@ const Home = () => {
           ].map(([label, value, detail]) => (
             <div
               key={label}
-              className={`rounded-xl border p-5 shadow-sm ${
-                darkMode
-                  ? "bg-gray-900 border-gray-800"
-                  : "bg-white border-gray-100"
-              }`}
+              className={`rounded-xl border p-5 shadow-sm ${"bg-base-100 border-base-300"}`}
             >
               <p
                 className={`text-sm ${
@@ -226,11 +215,7 @@ const Home = () => {
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <section
-            className={`lg:col-span-2 rounded-2xl border p-4 sm:p-6 shadow-sm ${
-              darkMode
-                ? "bg-gray-900 border-gray-800"
-                : "bg-white border-gray-100"
-            }`}
+            className={`lg:col-span-2 rounded-2xl border p-4 sm:p-6 shadow-sm ${"bg-base-100 border-base-300"}`}
           >
             <div className="flex items-start justify-between gap-3 mb-6">
               <div className="min-w-0">
@@ -252,9 +237,9 @@ const Home = () => {
                     {products.length} items
                   </span>
                 </div>
-                <div className="h-2 rounded-full bg-gray-200 overflow-hidden">
+                <div className="h-2 overflow-hidden rounded-full bg-base-300">
                   <div
-                    className="h-full rounded-full bg-blue-600"
+                    className="h-full rounded-full bg-primary"
                     style={{ width: `${Math.min(products.length * 10, 100)}%` }}
                   />
                 </div>
@@ -269,7 +254,7 @@ const Home = () => {
                     {totalStock} units
                   </span>
                 </div>
-                <div className="h-2 rounded-full bg-gray-200 overflow-hidden">
+                <div className="h-2 overflow-hidden rounded-full bg-base-300">
                   <div
                     className="h-full rounded-full bg-emerald-500"
                     style={{ width: `${Math.min(totalStock, 100)}%` }}
@@ -280,11 +265,7 @@ const Home = () => {
           </section>
 
           <section
-            className={`rounded-2xl border p-4 sm:p-6 shadow-sm ${
-              darkMode
-                ? "bg-gray-900 border-gray-800"
-                : "bg-white border-gray-100"
-            }`}
+            className={`rounded-2xl border p-4 sm:p-6 shadow-sm ${"bg-base-100 border-base-300"}`}
           >
             <h3 className="text-xl font-bold">Quick actions</h3>
             <p
@@ -292,26 +273,17 @@ const Home = () => {
             >
               Keep your catalog up to date.
             </p>
-            <Link
-              to="/product"
-              className="block text-center mt-6 bg-blue-600 text-white px-4 py-3 rounded-lg hover:bg-blue-700 transition"
-            >
-              Open Product Manager
+            <Link to="/product" className="btn btn-primary mt-6 block w-full">
+              <h1 className="mt-2"> Open Product Manager</h1>
             </Link>
-            <div
-              className={`mt-4 rounded-lg p-4 text-sm ${darkMode ? "bg-gray-800 text-gray-300" : "bg-blue-50 text-blue-700"}`}
-            >
+            <div className="mt-4 rounded-lg bg-base-200 p-4 text-sm text-base-content">
               Add images by pasting a direct image link in the Product Manager.
             </div>
           </section>
         </div>
 
         <section
-          className={`mt-6 rounded-2xl border p-4 sm:p-5 shadow-sm ${
-            darkMode
-              ? "bg-gray-900 border-gray-800"
-              : "bg-white border-gray-100"
-          }`}
+          className={`mt-6 rounded-2xl border p-4 sm:p-5 shadow-sm ${"bg-base-100 border-base-300"}`}
         >
           <div className="flex items-start justify-between gap-3 mb-4">
             <div className="min-w-0">
@@ -324,7 +296,7 @@ const Home = () => {
             </div>
             <Link
               to="/product"
-              className="text-sm font-semibold text-blue-600 hover:text-blue-700"
+              className="text-sm font-semibold text-primary hover:text-primary/80"
             >
               View all
             </Link>
