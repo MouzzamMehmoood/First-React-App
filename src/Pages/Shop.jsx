@@ -614,7 +614,7 @@ const Shop = () => {
             <span className="inline-block rounded-full bg-amber-100/80 dark:bg-amber-900/40 border border-amber-300/60 dark:border-amber-700/60 px-3.5 py-1 text-[11px] font-bold uppercase tracking-[0.2em] text-amber-800 dark:text-amber-300 mb-4">
               ✦ Exclusive Atelier Release
             </span>
-            <h1 className="font-editorial text-4xl sm:text-5xl lg:text-6xl font-normal tracking-tight text-stone-900 dark:text-white leading-[1.15]">
+            <h1 className="font-editorial text-4xl sm:text-5xl lg:text-6xl font-normal tracking-tight text-black dark:text-white leading-[1.15]">
               Thoughtfully curated for elevated everyday living.
             </h1>
             <p className="mt-4 text-base sm:text-lg text-stone-600 dark:text-stone-300 leading-relaxed max-w-2xl">
